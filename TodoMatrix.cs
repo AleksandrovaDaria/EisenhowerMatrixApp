@@ -22,11 +22,7 @@ class TodoMatrix
 
     public TodoQuarter GetQuarter(string status)
     {
-        if (TodoQuarters.ContainsKey(status))
-        {
-            return TodoQuarters[status];
-        }
-        return null;
+        return TodoQuarters.ContainsKey(status) ? TodoQuarters[status] : null;
     }
 
     public void AddItem(string title, DateTime deadline, bool isImportant = false)
@@ -83,58 +79,61 @@ class TodoMatrix
     }
 
     public override string ToString()
+{
+    const string separator = "--------------|--------------------------------|--------------------------------";
+    const int quarterColumnWidth = 13;
+    const int itemColumnWidth = 32;
+
+    List<string> rows = new List<string>
     {
-        string separator = "--------------|--------------------------------|--------------------------------";
-        string[] rows = new string[7];
+        "              |" + " ".PadRight(quarterColumnWidth) + "URGENT" + " ".PadRight(quarterColumnWidth) + "|" + " ".PadRight(quarterColumnWidth) + "NOT URGENT" + " ".PadRight(quarterColumnWidth),
+        separator
+    };
 
-        rows[0] = "              |            URGENT              |           NOT URGENT           ";
-        rows[1] = separator;
+    int maxImportantItems = Math.Max(TodoQuarters["IU"].GetItems().Count, TodoQuarters["IN"].GetItems().Count);
+    int maxNotImportantItems = Math.Max(TodoQuarters["NU"].GetItems().Count, TodoQuarters["NN"].GetItems().Count);
 
-        int maxImportantItems = Math.Max(TodoQuarters["IU"].GetItems().Count, TodoQuarters["IN"].GetItems().Count);
-        int maxNotImportantItems = Math.Max(TodoQuarters["NU"].GetItems().Count, TodoQuarters["NN"].GetItems().Count);
-
+        rows.Add("IMPORTANT".PadRight(quarterColumnWidth) + " |" + "".PadLeft(itemColumnWidth) + "| " + "".PadRight(itemColumnWidth));
         for (int i = 0; i < maxImportantItems; i++)
-        {
-            string[] items = new string[4];
+    {
+        string[] items = new string[4];
 
-            AddItemToRow(items, TodoQuarters["IU"], i, 0);
-            AddItemToRow(items, TodoQuarters["IN"], i, 1);
-
-            rows[i + 2] = "IMPORTANT".PadRight(13) + " | " + items[0] + " | " + items[1];
-        }
-
-        rows[maxImportantItems + 2] = separator;
-
-        int rowNum = maxImportantItems + 3;
-
-        for (int i = 0; i < maxNotImportantItems; i++)
-        {
-            string[] items = new string[4];
-
-            AddItemToRow(items, TodoQuarters["NU"], i, 2);
-            AddItemToRow(items, TodoQuarters["NN"], i, 3);
-
-            rows[rowNum] = "NOT IMPORTANT".PadRight(13) + " | " + items[2] + " | " + items[3];
-            rowNum++;
-        }
-
-        rows[rowNum] = separator;
-
-        return string.Join("\n", rows);
+        AddItemToRow(items, TodoQuarters["IU"], i, 0);
+        AddItemToRow(items, TodoQuarters["IN"], i, 1);
+        rows.Add("".PadRight(quarterColumnWidth) + " |" + items[0] + "".PadRight(itemColumnWidth - (items[0].Length-27)) + "|" + items[1]);
     }
 
-    private void AddItemToRow(string[] items, TodoQuarter quarter, int index, int column)
+    rows.Add(separator);
+
+    int rowNum = maxImportantItems + 3;
+
+        rows.Add("NOT IMPORTANT".PadRight(quarterColumnWidth) + " |" + "".PadRight(itemColumnWidth) + "|" + "".PadRight(itemColumnWidth));
+        for (int i = 0; i < maxNotImportantItems; i++)
+    {
+        string[] items = new string[4];
+
+        AddItemToRow(items, TodoQuarters["NU"], i, 2);
+        AddItemToRow(items, TodoQuarters["NN"], i, 3);
+
+        rows.Add("".PadRight(quarterColumnWidth) + " |" + items[2] + "".PadRight(itemColumnWidth - (items[2].Length - 27)) + "|" + items[3]);
+        rowNum++;
+    }
+    rows.Add(separator);
+
+    return string.Join("\n", rows);
+}
+     private void AddItemToRow(string[] items, TodoQuarter quarter, int index, int column)
     {
         List<TodoItem> itemsInQuarter = quarter.GetItems();
         if (index < itemsInQuarter.Count)
         {
-            items[column] = itemsInQuarter[index].ToString().PadRight(34);
+            items[column] = itemsInQuarter[index].ToString();
         }
         else
         {
-            items[column] = "".PadRight(34);
+            items[column] = "";
         }
     }
-
+   
 
 }

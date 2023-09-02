@@ -43,6 +43,25 @@ class TodoItem
     public override string ToString()
     {
         string status = IsDone ? "[x]" : "[ ]";
-        return $"{status} {Deadline:dd-MM} {Title}";
+        string color = GetColor();
+        return $"{color}{status}\u001b[0m {color}{Deadline:dd-MM}\u001b[0m {color}{Title}\u001b[0m";
     }
+
+    public string GetColor()
+    {
+        TimeSpan timeUntilDeadline = Deadline.Date - DateTime.Now.Date;
+        if (timeUntilDeadline.Days > 3)
+        {
+            return "\u001b[32m"; // Green
+        }
+        else if (timeUntilDeadline.Days > 0)
+        {
+            return "\u001b[33m"; // Orange
+        }
+        else
+        {
+            return "\u001b[31m"; // Red
+        }
+    }
+
 }

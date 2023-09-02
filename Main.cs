@@ -12,10 +12,10 @@ class Program
         TodoMatrix matrix = new TodoMatrix();
 
         // Add some sample items to the matrix
-        matrix.AddItem("Go to the doctor", new DateTime(2023, 8, 28), true);
-        matrix.AddItem("Submit assignment", new DateTime(2023, 8, 30), true);
-        matrix.AddItem("Buy a ticket", new DateTime(2023, 8, 31), false);
-        matrix.AddItem("House of Cards", new DateTime(2023, 8, 25), false);
+        matrix.AddItem("Go to the doctor", new DateTime(2023, 8, 2), true);
+        matrix.AddItem("Submit assign", new DateTime(2023,9,4), true);
+        matrix.AddItem("Buy a ticket", new DateTime(2023, 8, 2), false);
+        matrix.AddItem("House of Cards", new DateTime(2023, 9, 6), false);
 
         // Mark an item as done
         matrix.GetQuarter("IU").GetItem(0).Mark();
