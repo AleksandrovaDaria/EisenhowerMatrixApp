@@ -100,7 +100,14 @@ class TodoMatrix
 
         AddItemToRow(items, TodoQuarters["IU"], i, 0);
         AddItemToRow(items, TodoQuarters["IN"], i, 1);
-        rows.Add("".PadRight(quarterColumnWidth) + " |" + items[0] + "".PadRight(itemColumnWidth - (items[0].Length-27)) + "|" + items[1]);
+        if (items[0].Length!=0) 
+            {
+                rows.Add("".PadRight(quarterColumnWidth) + " |" + items[0] + "".PadRight(itemColumnWidth - (items[0].Length - 27)) + "|" + items[1]);
+            }
+        else
+            {
+                rows.Add("".PadRight(quarterColumnWidth) + " |" + "".PadRight(itemColumnWidth) + "|" + items[1]);
+            }     
     }
 
     rows.Add(separator);
@@ -115,7 +122,14 @@ class TodoMatrix
         AddItemToRow(items, TodoQuarters["NU"], i, 2);
         AddItemToRow(items, TodoQuarters["NN"], i, 3);
 
-        rows.Add("".PadRight(quarterColumnWidth) + " |" + items[2] + "".PadRight(itemColumnWidth - (items[2].Length - 27)) + "|" + items[3]);
+            if (items[2].Length != 0)
+            {
+                rows.Add("".PadRight(quarterColumnWidth) + " |" + items[2] + "".PadRight(itemColumnWidth - (items[2].Length - 27)) + "|" + items[3]);
+            }
+            else
+            {
+                rows.Add("".PadRight(quarterColumnWidth) + " |" + "".PadRight(itemColumnWidth) + "|" + items[3]);
+            }
         rowNum++;
     }
     rows.Add(separator);
